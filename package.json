@@ -21,9 +21,9 @@
     "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --passWithNoTests",
     "eject": "react-scripts eject",
-    "eslint": "npx eslint ./src/"
+    "lint": "eslint --cache . --max-warnings 20"
   },
   "eslintConfig": {
     "extends": [
