@@ -25,6 +25,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --passWithNoTests",
+    "type-check": "tsc --noEmit",
     "eject": "react-scripts eject",
     "lint": "eslint --cache . --max-warnings 20"
   },
