@@ -10,6 +10,28 @@ import PokemonFilter from "./components/PokemonFilter";
 import PokemonTable from "./components/PokemonTable";
 import PokemonContext from "./PokemonContext";
 
+const pokemonReducer = (state, action) => {
+  switch(action.type) {
+    case 'SET_FILTER':
+      return {
+        ...state,
+        filter: action.payload,
+      };
+    case 'SET_POKEMON':
+      return {
+        ...state,
+        pokemon: action.payload,
+      };
+    case 'SET_SELECTED_POKEMON':
+      return {
+        ...state,
+        selectedPokemon: action.payload,
+      };
+    default:
+      throw new Error("No action");
+  }
+}
+
 const Title = styled.h1`
   text-align: center;
 `;
@@ -25,21 +47,30 @@ const Container = styled.div`
 `;
 
 function App() {
-  const [filter, filterSet] = React.useState("");
-  const [pokemon, pokemonSet] = React.useState([]);
-  const [selectedPokemon, selectedPokemonSet] = React.useState(null);
+  const [state, dispatch] = React.useReducer(pokemonReducer, {
+    pokemon: [],
+    filter: "",
+    selectedPokemon: null,
+  })
 
   React.useEffect(() => {
-    fetch("http://localhost:3000/starting-react/pokemon.json")
+    fetch("/starting-react/pokemon.json")
       .then(resp => resp.json())
-      .then(data => pokemonSet(data))
+      .then(data => dispatch({
+        type: 'SET_POKEMON',
+        payload: data,
+      }));
     });
+
+  if (!state.pokemon) {
+    return <div>Loading data</div>
+  }
 
   return (
     <PokemonContext.Provider
       value={{
-        filter, pokemon, selectedPokemon, 
-        filterSet, pokemonSet, selectedPokemonSet,
+        state, 
+        dispatch,
       }}
     >
       <Container>
